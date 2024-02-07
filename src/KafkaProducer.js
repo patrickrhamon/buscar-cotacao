@@ -20,7 +20,7 @@ class KafkaProducer {
         console.error('Erro ao enviar mensagem:', err);
         return;
       }
-      console.log('Mensagem enviada com sucesso:', data);
+      // console.log('Mensagem enviada com sucesso:', data);
     });
   }
 }

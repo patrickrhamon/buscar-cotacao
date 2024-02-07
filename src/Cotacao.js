@@ -13,7 +13,7 @@ class Cotacao {
   async obterCotacao() {
     try {
       const agora = new Date();
-      if (!Mercado.aberto(agora)) {
+      if (Mercado.aberto(agora)) {
         throw new Error('O mercado está fechado para negociações.');
       }
 

@@ -1,4 +1,5 @@
 const { KafkaClient, Consumer } = require('kafka-node');
+const { Ativo } = require('./models/Ativo.js');
 
 class KafkaConsumer {
   constructor(kafkaHost, topic) {
@@ -11,13 +12,28 @@ class KafkaConsumer {
   }
 
   consumeMessage() {
-    this.consumer.on('message', (message) => {
-      console.log('mensagem recebida:', message)
+    console.log("chamou");
+    this.consumer.on('message', async (message) => {
+      await this.persistData(message.value);
+      // console.log('mensagem recebida:', message)
     })
 
     this.consumer.on('error', (err) => {
       console.log('Erro ao consumir a mensagem: ', err)
     })
+  }
+
+  async persistData(data) {
+    try {
+      Ativo.create({
+        name: data.ativo,
+        value: data.valor,
+        type: data.tipo,
+        date: data.data,
+      });
+    } catch (error) {
+      console.error(`Erro ao persistir no banco: ${error.message}`);
+    }
   }
 }
 

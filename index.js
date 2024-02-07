@@ -33,7 +33,7 @@ function loop() {
       }, 2000)
     })
     .catch(async (error) => {
-      console.log("Error: "+ error.message)
+      console.error("Error: "+ error.message)
       setTimeout(() => {
         loop()
       }, 10000)
@@ -42,4 +42,4 @@ function loop() {
 
 loop()
 
-consumer.consumeMessage()
+// consumer.consumeMessage()
