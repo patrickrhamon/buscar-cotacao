@@ -1,5 +1,6 @@
 const { KafkaClient, Consumer } = require('kafka-node');
-const { Ativo } = require('./models/Ativo.js');
+const Ativo = require('./models/Ativo');
+const sequelize = require('./orm/sequelize');
 
 class KafkaConsumer {
   constructor(kafkaHost, topic) {
@@ -12,10 +13,9 @@ class KafkaConsumer {
   }
 
   consumeMessage() {
-    console.log("chamou");
     this.consumer.on('message', async (message) => {
+      console.log("chamou");
       await this.persistData(message.value);
-      // console.log('mensagem recebida:', message)
     })
 
     this.consumer.on('error', (err) => {
@@ -24,8 +24,10 @@ class KafkaConsumer {
   }
 
   async persistData(data) {
+    await sequelize.authenticate();
+    data = JSON.parse(data);
     try {
-      Ativo.create({
+      await Ativo.create({
         name: data.ativo,
         value: data.valor,
         type: data.tipo,

@@ -42,4 +42,4 @@ function loop() {
 
 loop()
 
-// consumer.consumeMessage()
+consumer.consumeMessage()

@@ -1,8 +1,10 @@
 // models/Cotacao.js
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../orm/sequelize');
 
-const Ativo = sequelize.define('ativos', {
+class Ativo extends Model {}
+
+Ativo.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -25,6 +27,16 @@ const Ativo = sequelize.define('ativos', {
     allowNull: false,
     defaultValue: DataTypes.NOW,
   },
+}, {
+  // Other model options go here
+  sequelize, // We need to pass the connection instance
+  modelName: 'Ativo', // We need to choose the model name
+  tableName: 'ativos',
+  timestamps: false,
 });
+
+(async () => {
+  await Ativo.sync();
+})()
 
 module.exports = Ativo;
